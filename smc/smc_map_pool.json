@@ -1,0 +1,138 @@
+{
+    "modes": [
+        "Splat Zones",
+        "Tower Control",
+        "Rainmaker",
+        "Clam Blitz"
+    ],
+    "maps": {
+        "Splat Zones": [
+            {
+                "map_name": "Ancho-V Games",
+                "score": 8
+            },
+            {
+                "map_name": "Blackbelly Skatepark",
+                "score": 6.5
+            },
+            {
+                "map_name": "Inkblot Art Academy",
+                "score": 9
+            },
+            {
+                "map_name": "MakoMart",
+                "score": 9
+            },
+            {
+                "map_name": "New Albacore Hotel",
+                "score": 7
+            },
+            {
+                "map_name": "Piranha Pit",
+                "score": 8
+            },
+            {
+                "map_name": "Shellendorf Institute",
+                "score": 6.5
+            },
+            {
+                "map_name": "Starfish Mainstage",
+                "score": 8
+            },
+            {
+                "map_name": "Wahoo World",
+                "score": 8
+            }
+        ],
+        "Tower Control": [
+            {
+                "map_name": "Ancho-V Games",
+                "score": 9
+            },
+            {
+                "map_name": "Inkblot Art Academy",
+                "score": 8
+            },
+            {
+                "map_name": "Manta Maria",
+                "score": 6
+            },
+            {
+                "map_name": "Shellendorf Institute",
+                "score": 6
+            },
+            {
+                "map_name": "Starfish Mainstage",
+                "score": 7
+            },
+            {
+                "map_name": "Sturgeon Shipyard",
+                "score": 7
+            },
+            {
+                "map_name": "The Reef",
+                "score": 7
+            }
+        ],
+        "Rainmaker": [
+            {
+                "map_name": "Blackbelly Skatepark",
+                "score": 9
+            },
+            {
+                "map_name": "Humpback Pump Track",
+                "score": 9
+            },
+            {
+                "map_name": "MakoMart",
+                "score": 8
+            },
+            {
+                "map_name": "Manta Maria",
+                "score": 8
+            },
+            {
+                "map_name": "Musselforge Fitness",
+                "score": 7
+            },
+            {
+                "map_name": "Snapper Canal",
+                "score": 7
+            },
+            {
+                "map_name": "Sturgeon Shipyard",
+                "score": 7
+            }
+        ],
+        "Clam Blitz": [
+            {
+                "map_name": "Humpback Pump Track",
+                "score": 6
+            },
+            {
+                "map_name": "Musselforge Fitness",
+                "score": 7
+            },
+            {
+                "map_name": "New Albacore Hotel",
+                "score": 6
+            },
+            {
+                "map_name": "Piranha Pit",
+                "score": 7
+            },
+            {
+                "map_name": "Snapper Canal",
+                "score": 8
+            },
+            {
+                "map_name": "The Reef",
+                "score": 9
+            },
+            {
+                "map_name": "Wahoo World",
+                "score": 7
+            }
+        ]
+    }
+}
