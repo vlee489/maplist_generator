@@ -70,12 +70,12 @@ def main():
 	mapmode_list = read_map_pool_from_file(parsed_args.map_pool_file)
 
 	maplist = create_continuous_maplist(mapmode_list, parsed_args.num_games, parsed_args.map_quality)
-
+	maplist_str = '\n'.join(maplist)
 	if parsed_args.output_file:
 		print(parsed_args.output_file)
 		with open(parsed_args.output_file, "w+") as f:
-			f.write('\n'.join(maplist))
-	print(maplist)
+			f.write(maplist_str)
+	print(maplist_str)
 
 if __name__ == "__main__":
     main()

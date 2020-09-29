@@ -11,22 +11,16 @@
         },
         {
             "num_games": 5,
-            "counterpicks": true
-        },
-        {
-            "num_games": 5,
-            "counterpicks": true,
             "game_overrides": [
                 {
                     "map": "MakoMart",
-                    "mode": "Tower Control",
+                    "mode": "Splat Zones",
                     "game_num": 1
                 }
             ]
         },
         {
             "num_games": 5,
-            "counterpicks": true,
             "game_overrides": [
                 {
                     "mode": "Splat Zones",

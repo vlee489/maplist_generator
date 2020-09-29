@@ -5,8 +5,8 @@ import json
 class MapPoolConfig:
 	def __init__(self, 
 		exclude_map_score_threshold=6, 
-		preferred_map_score_threshold=7, 
-		max_non_preferred_maps_per_round=1,
+		preferred_map_score_threshold=8, 
+		max_non_preferred_maps_per_round=2,
 		distinct_maps_in_consecutive_rounds=True,
 		min_games_before_repeat_mode=2,
 		decreased_past_mapmode_likelihood=True,

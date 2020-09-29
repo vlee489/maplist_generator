@@ -93,12 +93,12 @@ def main():
 	tournament_dict = read_tournament_from_file(parsed_args.tournament_file)
 
 	output_json_dict = create_tournament(mapmode_list, tournament_dict)
-
+	output_json_str = json.dumps(output_json_dict, indent=4)
 	if parsed_args.output_file:
 		print(parsed_args.output_file)
 		with open(parsed_args.output_file, "w+") as f:
-			f.write(json.dumps(output_json_dict, indent=4))
-	print(output_json_dict)
+			f.write(output_json_str)
+	print(output_json_str)
 
 if __name__ == "__main__":
     main()
