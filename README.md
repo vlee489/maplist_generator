@@ -39,7 +39,7 @@ If MAP_POOL_FILE is not provided, it will default to *./example/example_map_pool
 Try cd-ing to the project root directory and running the following command. This will create a list of map-mode combinations perfect for scrims or single round events.
 
 ```bash
-python maplist_gen.py -g 15 -m ./smc/smc_map_pool.json  
+python maplist_gen.py -g 15 -m ./smc/smc_map_pool.json -o test_scrim.json
 ```
 
 ## Map Pool Config File
