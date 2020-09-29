@@ -20,10 +20,10 @@ Use ```python tournament_gen.py -h``` for help with the command.
 
 If TOURNAMENT_FILE or MAP_POOL_FILE are not provided, they will default to *./example/example_tournament.json* and *./example/example_map_pool.json* respectively
 
-Try cd-ing to the project root directory (same level as the code) and try running the following command. This will create a tournament using the Saturday Morning Coffee maplist. Check out the output file to see what a generated tourney looks like!
+Try cd-ing to the project root directory (same level as the code) and running the following command. This will create a tournament using the Saturday Morning Coffee maplist. Check out the output file to see what a generated tourney looks like!
 
 ```bash
-python ./tournament_gen.py -t ./examples/example_tournament.json -m ./smc/smc_map_pool.json -o test_tourney_out.json
+python tournament_gen.py -t ./examples/example_tournament.json -m ./smc/smc_map_pool.json -o test_tourney_out.json
 ```
 
 ## Create a Scrimmage (List of Mapmodes, no Rounds)
@@ -35,6 +35,12 @@ python maplist_gen.py [-h] [-m MAP_POOL_FILE] [-g NUM_GAMES] [-q MAP_QUALITY] [-
 Use ```python maplist_gen.py -h``` for help with the command.
 
 If MAP_POOL_FILE is not provided, it will default to *./example/example_map_pool.json
+
+Try cd-ing to the project root directory and running the following command. This will create a list of map-mode combinations perfect for scrims or single round events.
+
+```bash
+python maplist_gen.py -g 15 -m ./smc/smc_map_pool.json  
+```
 
 ## Map Pool Config File
 
