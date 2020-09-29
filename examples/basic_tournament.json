@@ -1,0 +1,26 @@
+{
+    "rounds": [
+        {
+            "num_games": 3
+        },
+        {
+            "num_games": 3
+        },
+        {
+            "num_games": 3
+        },
+        {
+            "num_games": 3
+        },
+        {
+            "num_games": 5,
+            "game_overrides": [
+                {
+                    "map": "MakoMart",
+                    "mode": "Splat Zones",
+                    "game_num": 1
+                }
+            ]
+        }
+    ]
+}

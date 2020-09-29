@@ -1,0 +1,14 @@
+{
+    "exclude_map_score_threshold": 5.5,
+    "preferred_map_score_threshold": 7,
+    "max_non_preferred_maps_per_round": 1,
+    "distinct_maps_in_consecutive_rounds": true,
+    "min_games_before_repeat_mode": 3,
+    "decreased_past_mapmode_likelihood": true,
+    "max_maps_per_mode": 10,
+    "rounds": [
+        {
+            "num_games": 15
+        }
+    ]
+}
