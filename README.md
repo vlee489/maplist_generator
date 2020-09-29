@@ -46,6 +46,12 @@ python maplist_gen.py -g 15 -m ./smc/smc_map_pool.json -o test_scrim.json
 
 Map pools are specified in json files like the following example. Each mapmode should be scored from 0-10 by how frequent the user wants it to appear. A higher score represents more frequent use.
 
+**Note:** The method for getting probability of picking the map isn't directly proportional to the score. In other words,a map with score 10 won't show up twice as much as one with score 5, but something closer to 4x as often.
+
+For best use of the scoring system, please rate maps that you'd be fine seeing in tourney at least a 5 or 6 and maps that are highly popular scores of 8 or more. Maps with lower scores will appear significantly less frequently.
+
+The tournament configuration has a score cutoff threshold if you'd like to exclude all maps in a map pool below a certain score. Details can be found in the **Tournament Config File** section.
+
 ```json
 {
     "modes": [
@@ -86,6 +92,18 @@ Map pools are specified in json files like the following example. Each mapmode s
         ]
     }
 }
+```
+
+If you're interested, the formula for the weight assigned to a map based on its score is here.
+
+```python
+# From MapMode in mapmode_pool.py
+# Pretty arbitrary formula but the exponent is to exaggerate the
+# difference in scores.
+# Higher map quality raises the exponent, shrinking lower scores much more than higher ones.
+def get_prob_weight(self, map_quality=5):
+    expon = 2.5 + (map_quality - 5.0) / 2.0
+    return (self.score / 10.0) ** expon
 ```
 
 ## Tournament Config File
