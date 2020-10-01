@@ -112,41 +112,87 @@ When generating a tournament, a minimum score can be specified to filter maps fr
 
 ## Configurations
 
-- rounds
+- tournament_type
   - Required: **Y**
-  - A list of rounds, each represented by a json struct.
-  - **round** config
-    - num_games
-      - The number of games in the round.
-      - Ex. [basic_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/basic_tournament.json)
-    - map_quality
+  - The tournament type. Current options: **rounds**, **double_elim**
+
+### *rounds* tournament
+
+- tournament_config
+  - Ex. [Basic Rounds Tournament](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/basic_tournament.json)
+  - rounds
+    - Required: If using **rounds** tournament type.
+    - A list of rounds, each represented by a json struct. See configuration below.
+
+### *double_elim* tournament
+
+- tournament_config
+  - Ex. [Double Elimination Tournament](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/double_elim_tournament.json)
+  - num_players
+    - Required: **Y**
+    - The number of players entered in the double elimination tournament.
+
+  - round_config
+    - share_rounds_w_l
       - Required: **N**
-      - Default: **normal**
-      - Possible values: "normal", "high", "very high"
-      - Higher map quality causes higher scored maps to be weighted more and picked more frequently.
-      - Ex. [high_map_quality_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/high_map_quality_tournament.json)
-    - game_overrides
+      - If **true**, some rounds and their maps will be reused between losers and winners. No entrant in the bracket will encounter both duplicate sets.
+    - default
+      - Required: **Y**
+      - The round config used for all sets in the tournament, unless overridden with the below options.
+    - w_quarterfinals
       - Required: **N**
-      - A list of game overrides, each represented by a json struct. This will force the specified game to use the map/mode listed.
-      - **override** config
-        - game_num
-          - Required: **Y**
-          - The game number to override. Starts at 1.
-        - mode
-          - Required: **Y**
-          - The desired mode to use in the override.
-        - map
-          - Required: **N**
-          - The desired map to use in the override.
-          - If this field is absent, it will randomly select a map from the pool of the given mode.
-      - Ex. [override_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/override_tournament.json)
-    - counterpicks
+      - The round config for Winners Quarterfinals. Uses the **default** round config if not present.
+    - w_semifinals
       - Required: **N**
-      - Default: **false**
-      - When *true*, the first map of the round will be randomly generated and the rest of the games in the round will be output as *"Counterpick"*
-      - Ex. [counterpick_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/counterpick_tournament.json)
+      - The round config for Winners Semifinals. Uses the **default** round config if not present.
+    - w_finals
+      - Required: **N**
+      - The round config for Winners Finals. Uses the **default** round config if not present.
+    - l_semifinals
+      - Required: **N**
+      - The round config for Losers Semifinals. Uses the **default** round config if not present.
+    - l_finals
+      - Required: **N**
+      - The round config for Losers Finals. Uses the **default** round config if not present.
+    - grand_finals
+      - Required: **N**
+      - The round config for Grand Finals. Uses the **default** round config if not present.
+
+### **round** config
+
+- num_games
+  - The number of games in the round.
+  - Ex. [basic_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/basic_tournament.json)
+- map_quality
+  - Required: **N**
+  - Default: **normal**
+  - Possible values: "normal", "high", "very high"
+  - Higher map quality causes higher scored maps to be weighted more and picked more frequently.
+  - Ex. [high_map_quality_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/high_map_quality_tournament.json)
+- game_overrides
+  - Required: **N**
+  - A list of game overrides, each represented by a json struct. This will force the specified game to use the map/mode listed.
+  - **override** config
+    - game_num
+      - Required: **Y**
+      - The game number to override. Starts at 1.
+    - mode
+      - Required: **Y**
+      - The desired mode to use in the override.
+    - map
+      - Required: **N**
+      - The desired map to use in the override.
+      - If this field is absent, it will randomly select a map from the pool of the given mode.
+  - Ex. [override_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/override_tournament.json)
+- counterpicks
+  - Required: **N**
+  - Default: **false**
+  - When *true*, the first map of the round will be randomly generated and the rest of the games in the round will be output as *"Counterpick"*
+  - Ex. [counterpick_tournament.json](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/counterpick_tournament.json)
 
 ### Map Generation Configurations
+
+Map generation configs go directly under the **tournament_config** attribute.
 
 - exclude_map_score_threshold
   - Required: **N**
