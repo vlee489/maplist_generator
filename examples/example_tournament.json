@@ -1,47 +1,50 @@
 {
-    "exclude_map_score_threshold": 5.5,
-    "preferred_map_score_threshold": 8,
-    "max_non_preferred_maps_per_round": 2,
-    "distinct_maps_in_consecutive_rounds": true,
-    "min_games_before_repeat_mode": 2,
-    "decreased_past_mapmode_likelihood": true,
-    "max_maps_per_mode": 10,
-    "rounds": [
-        {
-            "num_games": 3
-        },
-        {
-            "num_games": 3
-        },
-        {
-            "num_games": 3
-        },
-        {
-            "num_games": 3
-        },
-        {
-            "num_games": 3,
-            "game_overrides": [
-                {
-                    "map": "MakoMart",
-                    "mode": "Splat Zones",
-                    "game_num": 1
-                }
-            ]
-        },
-        {
-            "ignore_game_history": true,
-            "map_quality": "high",
-            "num_games": 5
-        },
-        {
-            "map_quality": "high",
-            "num_games": 5
-        },
-        {
-            "counterpicks": true,
-            "map_quality": "very high",
-            "num_games": 5
-        }
-    ]
+    "tournament_type": "rounds",
+    "tournament_config": {
+        "exclude_map_score_threshold": 5.5,
+        "preferred_map_score_threshold": 8,
+        "max_non_preferred_maps_per_round": 2,
+        "distinct_maps_in_consecutive_rounds": true,
+        "min_games_before_repeat_mode": 2,
+        "decreased_past_mapmode_likelihood": true,
+        "max_maps_per_mode": 10,
+        "rounds": [
+            {
+                "num_games": 3
+            },
+            {
+                "num_games": 3
+            },
+            {
+                "num_games": 3
+            },
+            {
+                "num_games": 3
+            },
+            {
+                "num_games": 3,
+                "game_overrides": [
+                    {
+                        "map": "MakoMart",
+                        "mode": "Splat Zones",
+                        "game_num": 1
+                    }
+                ]
+            },
+            {
+                "ignore_game_history": true,
+                "map_quality": "high",
+                "num_games": 5
+            },
+            {
+                "map_quality": "high",
+                "num_games": 5
+            },
+            {
+                "counterpicks": true,
+                "map_quality": "very high",
+                "num_games": 5
+            }
+        ]
+    }
 }

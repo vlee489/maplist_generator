@@ -1,13 +1,16 @@
 {
-    "rounds": [
-        {
-            "num_games": 3
-        },
-        {
-            "num_games": 3
-        },
-        {
-            "num_games": 5
-        }
-    ]
+    "tournament_type": "rounds",
+    "tournament_config": {
+        "rounds": [
+            {
+                "num_games": 3
+            },
+            {
+                "num_games": 3
+            },
+            {
+                "num_games": 5
+            }
+        ]
+    }
 }

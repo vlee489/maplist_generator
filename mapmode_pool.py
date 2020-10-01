@@ -6,7 +6,7 @@ class MapPoolConfig:
 	def __init__(self, 
 		exclude_map_score_threshold=6, 
 		preferred_map_score_threshold=8, 
-		max_non_preferred_maps_per_round=2,
+		max_non_preferred_maps_per_round=1,
 		distinct_maps_in_consecutive_rounds=True,
 		min_games_before_repeat_mode=2,
 		decreased_past_mapmode_likelihood=True,
@@ -42,9 +42,15 @@ class MapMode:
 		self.map_name = map_name
 		self.score = score
 
+	# Pretty arbitrary formula but the exponent is to exaggerate the
+	# difference in scores.
+	# Higher map quality raises the exponent, shrinking lower scores much more than higher ones.
 	def get_prob_weight(self, map_quality=5):
 		expon = 2.5 + (map_quality - 5.0) / 2.0
 		return (self.score / 10.0) ** expon
+	
+	def clone(self):
+		return MapMode(mode_name=self.mode_name, map_name=self.map_name, score=self.score)
 
 	def __str__(self):
 		return f"{self.mode_name} on {self.map_name}"
@@ -63,6 +69,12 @@ class RoundContext:
 	def finalize_round(self):
 		self.past_rounds.append(self.current_round)
 		self.current_round = []
+
+	def clone(self):
+		new_rd_ctx = RoundContext()
+		new_rd_ctx.past_rounds = [[game.clone() for game in rd] for rd in self.past_rounds]
+		new_rd_ctx.current_round = [game.clone() for game in self.current_round]
+		return new_rd_ctx
 
 	def __str__(self):
 		return str(self.past_rounds)
@@ -144,24 +156,28 @@ class MapModePool:
 		update_if_nonempty = lambda old, new: new if len(new.mapmode_list) > 0 else old
 		curr_pool = self.filter_exclude_bad_mapmodes()
 
+		# print(f"1- {len(curr_pool.mapmode_list)}")
 		# Limit to max maps per mode
 		curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_limit_maps_per_mode_from_ctx(round_ctx))
+		# print(f"2- {len(curr_pool.mapmode_list)}")
 
 		# Don't play same mode before certain num games
 		if self.map_pool_config.min_games_before_repeat_mode > 0:
 			curr_round = round_ctx.current_round[::-1] if len(round_ctx.current_round) > 0 else []
-			last_round = round_ctx.past_rounds[-1][::-1] if len(round_ctx.past_rounds) > 0 else []
-			most_recent_modes = curr_round + last_round
+			past_round_games = [item for sublist in round_ctx.past_rounds for item in sublist][::-1]
+			most_recent_modes = curr_round + past_round_games
 			for i in range(self.map_pool_config.min_games_before_repeat_mode):
 				if i < len(most_recent_modes):
 					mode_name = most_recent_modes[i].mode_name
 					curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_exclude_mode(mode_name))
+		# print(f"3- {len(curr_pool.mapmode_list)}")
 
 		# Can't play same maps as previous round
 		if self.map_pool_config.distinct_maps_in_consecutive_rounds:
 			if len(round_ctx.past_rounds) > 0:
 				for mapmode in round_ctx.past_rounds[-1]:
 					curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_exclude_map(mapmode.map_name))
+		# print(f"4- {len(curr_pool.mapmode_list)}")
 
 		ok_map_pool = self.filter_include_okay_mapmodes()
 		ok_map_count = 0
@@ -170,6 +186,7 @@ class MapModePool:
 			curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_exclude_map(mapmode.map_name))
 			if mapmode in ok_map_pool.mapmode_list:
 				ok_map_count += 1
+		# print(f"5- {len(curr_pool.mapmode_list)}")
 
 		if ok_map_count >= self.map_pool_config.max_non_preferred_maps_per_round:
 			curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_include_good_mapmodes())
@@ -180,6 +197,7 @@ class MapModePool:
 					if mapmode in rd and rds_ago < 4:
 						new_score = mapmode.score * (1.0 - 1.0 / (1.75 * (rds_ago + 1.0) * (rds_ago + 1.0)))
 						curr_pool.mapmode_list[i] = MapMode(mode_name=mapmode.mode_name, map_name=mapmode.map_name, score=new_score)
+		# print(f"6- {len(curr_pool.mapmode_list)}")
 
 		return curr_pool
 		
