@@ -147,7 +147,6 @@ class MapModePool:
 			else:
 				new_mapmode_list += mode_to_all_mapmodes[mode]
 		
-		# print(len(new_mapmode_list))
 		return MapModePool(new_mapmode_list,
 			self.map_pool_config)
 		
@@ -156,10 +155,8 @@ class MapModePool:
 		update_if_nonempty = lambda old, new: new if len(new.mapmode_list) > 0 else old
 		curr_pool = self.filter_exclude_bad_mapmodes()
 
-		# print(f"1- {len(curr_pool.mapmode_list)}")
 		# Limit to max maps per mode
 		curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_limit_maps_per_mode_from_ctx(round_ctx))
-		# print(f"2- {len(curr_pool.mapmode_list)}")
 
 		# Don't play same mode before certain num games
 		if self.map_pool_config.min_games_before_repeat_mode > 0:
@@ -170,14 +167,12 @@ class MapModePool:
 				if i < len(most_recent_modes):
 					mode_name = most_recent_modes[i].mode_name
 					curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_exclude_mode(mode_name))
-		# print(f"3- {len(curr_pool.mapmode_list)}")
 
 		# Can't play same maps as previous round
 		if self.map_pool_config.distinct_maps_in_consecutive_rounds:
 			if len(round_ctx.past_rounds) > 0:
 				for mapmode in round_ctx.past_rounds[-1]:
 					curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_exclude_map(mapmode.map_name))
-		# print(f"4- {len(curr_pool.mapmode_list)}")
 
 		ok_map_pool = self.filter_include_okay_mapmodes()
 		ok_map_count = 0
@@ -186,7 +181,6 @@ class MapModePool:
 			curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_exclude_map(mapmode.map_name))
 			if mapmode in ok_map_pool.mapmode_list:
 				ok_map_count += 1
-		# print(f"5- {len(curr_pool.mapmode_list)}")
 
 		if ok_map_count >= self.map_pool_config.max_non_preferred_maps_per_round:
 			curr_pool = update_if_nonempty(curr_pool, curr_pool.filter_include_good_mapmodes())
@@ -197,7 +191,6 @@ class MapModePool:
 					if mapmode in rd and rds_ago < 4:
 						new_score = mapmode.score * (1.0 - 1.0 / (1.75 * (rds_ago + 1.0) * (rds_ago + 1.0)))
 						curr_pool.mapmode_list[i] = MapMode(mode_name=mapmode.mode_name, map_name=mapmode.map_name, score=new_score)
-		# print(f"6- {len(curr_pool.mapmode_list)}")
 
 		return curr_pool
 		
@@ -205,8 +198,6 @@ class MapModePool:
 
 	# map quality from 0 to 10. Higher map quality more heavily weights higher scored maps
 	def random_choice(self, map_quality=5):
-		# print(self.mapmode_list)
-		# print([mapmode.get_prob_weight(map_quality) for mapmode in self.mapmode_list])
 		chosen_mapmode = random.choices(self.mapmode_list, 
 			weights=[mapmode.get_prob_weight(map_quality) for mapmode in self.mapmode_list], 
 			k=1)[0]

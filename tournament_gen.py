@@ -103,7 +103,6 @@ def get_number_losers_rounds(num_players):
 def create_double_elim_tournament(mapmode_list, tournament_dict):
 	num_players = 16
 	round_ctx = RoundContext()
-	maplist = []
 	winners_rounds = []
 	losers_rounds = []
 	round_cfg = {}
