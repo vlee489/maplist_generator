@@ -6,6 +6,8 @@ This code runs using Python 3. Please install the latest version (or any version
 
 https://www.python.org/downloads/
 
+If you receive syntax errors when you run this program, you may have to use **python3** in the command name instead of **python** to specify the version of python.
+
 ## Usage
 
 This code can be referenced as a library elsewhere, or it can be run on the command line manually to create output.
@@ -20,10 +22,12 @@ Use ```python tournament_gen.py -h``` for help with the command.
 
 If TOURNAMENT_FILE or MAP_POOL_FILE are not provided, they will default to *./example/example_tournament.json* and *./example/example_map_pool.json* respectively
 
-Try cd-ing to the project root directory (same level as the code) and running the following command. This will create a tournament using the Saturday Morning Coffee maplist. Check out the output file to see what a generated tourney looks like!
+Try cd-ing to the project root directory (same level as the code) and running the following commands. This will create a tournament using the Saturday Morning Coffee maplist. Check out the output file to see what a generated tourney looks like!
 
 ```bash
-python tournament_gen.py -t ./examples/example_tournament.json -m ./smc/smc_map_pool.json -o test_tourney_out.json
+python tournament_gen.py -t ./examples/example_tournament.json -m ./smc/smc_map_pool.json -o rounds_tourney_output.json
+python tournament_gen.py -t ./examples/single_elim_tournament.json -m ./smc/smc_map_pool.json -o single_elim_tourney_output.json
+python tournament_gen.py -t ./examples/double_elim_tournament.json -m ./smc/smc_map_pool.json -o double_elim_tourney_output.json
 ```
 
 ## Create a Scrimmage (List of Mapmodes, no Rounds)
@@ -39,7 +43,7 @@ If MAP_POOL_FILE is not provided, it will default to *./example/example_map_pool
 Try cd-ing to the project root directory and running the following command. This will create a list of map-mode combinations perfect for scrims or single round events.
 
 ```bash
-python maplist_gen.py -g 15 -m ./smc/smc_map_pool.json -o test_scrim.json
+python maplist_gen.py -g 15 -m ./smc/smc_map_pool.json -o test_scrim.txt
 ```
 
 ## Map Pool Config File
@@ -49,6 +53,10 @@ Map pools are specified in json files like the following example. Each mapmode s
 **Note:** The method for getting probability of picking the map isn't directly proportional to the score. In other words,a map with score 10 won't show up twice as much as one with score 5, but something closer to 4x as often.
 
 For best use of the scoring system, please rate maps that you'd be fine seeing in tourney at least a 5 or 6 and maps that are highly popular scores of 8 or more. Maps with lower scores will appear significantly less frequently.
+
+- **Examples**
+  - [Saturday Morning Coffee Map Pool Config](https://github.com/bjackson8bit/maplist_generator/blob/master/smc/smc_map_pool.json)
+  - [Example Config (All mapmodes)](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/example_map_pool.json)
 
 The tournament configuration has a score cutoff threshold if you'd like to exclude all maps in a map pool below a certain score. Details can be found in the **Tournament Config File** section.
 
@@ -114,7 +122,7 @@ When generating a tournament, a minimum score can be specified to filter maps fr
 
 - tournament_type
   - Required: **Y**
-  - The tournament type. Current options: **rounds**, **double_elim**
+  - The tournament type. Current options: **rounds**, **single_elim**, **double_elim**
 
 ### *rounds* tournament
 
@@ -123,6 +131,27 @@ When generating a tournament, a minimum score can be specified to filter maps fr
   - rounds
     - Required: If using **rounds** tournament type.
     - A list of rounds, each represented by a json struct. See configuration below.
+
+### *single_elim* tournament
+
+- tournament_config
+  - Ex. [Single Elimination Tournament](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/single_elim_tournament.json)
+  - num_players
+    - Required: **Y**
+    - The number of players entered in the tournament.
+  - round_config
+    - default
+      - Required: **Y**
+      - The round config used for all sets in the tournament, unless overridden with the below options.
+    - quarterfinals
+      - Required: **N**
+      - The round config for Quarterfinals. Uses the **default** round config if not present.
+    - semifinals
+      - Required: **N**
+      - The round config for Semifinals. Uses the **default** round config if not present.
+    - finals
+      - Required: **N**
+      - The round config for Finals. Uses the **default** round config if not present.
 
 ### *double_elim* tournament
 
@@ -135,7 +164,10 @@ When generating a tournament, a minimum score can be specified to filter maps fr
   - round_config
     - share_rounds_w_l
       - Required: **N**
+      - Default: **true**
       - If **true**, some rounds and their maps will be reused between losers and winners. No entrant in the bracket will encounter both duplicate sets.
+      - Teams dropping into losers will have just played the same set as their next opponent in losers.
+      - Ex. [Double Elimination Tournament (Shared Rounds)](https://github.com/bjackson8bit/maplist_generator/blob/master/examples/double_elim_share_maps_tournament.json)
     - default
       - Required: **Y**
       - The round config used for all sets in the tournament, unless overridden with the below options.
@@ -157,6 +189,9 @@ When generating a tournament, a minimum score can be specified to filter maps fr
     - grand_finals
       - Required: **N**
       - The round config for Grand Finals. Uses the **default** round config if not present.
+    - grand_finals_reset
+      - Required: **N**
+      - The round config for Grand Finals Set 2. Uses the **default** round config if not present.
 
 ### **round** config
 
@@ -268,7 +303,9 @@ The default generation configurations are included at the bottom for convenience
     "max_maps_per_mode": 10
 }
 ```
+
 ### CSV/Discord Message Output
+
 To output the .csv files required for the EGtv Graphics Package, along with a Discord message, follow these instructions.
 
 1) Follow the instructions above to output a .json from the maplist generator.

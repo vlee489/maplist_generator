@@ -6,6 +6,12 @@ import os
 import argparse
 from mapmode_pool import MapMode, MapModePool, MapPoolConfig, RoundContext, \
 	to_mapmode_list, get_map_pool_by_mode, read_map_pool_from_file, read_tournament_from_file
+
+"""Generates a Maplist based on a scored map pool.
+   
+   author: bjackson8bit
+"""
+
 random.seed()
 
 
@@ -38,7 +44,7 @@ parser.add_argument('-q', '--map_quality', '--quality', type=check_quality_score
 	default=5, help="Map quality, a number between 0 - 10. Higher number means higher scored maps appear more often. Default 5.")
 
 parser.add_argument('-o', '--output_file', '--output',
-	default=ex_map_pool, help="Outputs maplist as a JSON to the specified file. Creates it if it does not exist.")
+	default=None, help="Outputs maplist as a JSON to the specified file. Creates it if it does not exist.")
 
 parsed_args = parser.parse_args()
 

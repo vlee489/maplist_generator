@@ -1,0 +1,21 @@
+{
+    "tournament_type": "single_elim",
+    "tournament_config": {
+        "num_players": 48,
+        "round_config": {
+            "default": {
+                "num_games": 3
+            },
+            "quarterfinals": {
+                "num_games": 3
+            },
+            "semifinals": {
+                "num_games": 3
+            },
+            "finals": {
+                "num_games": 5,
+                "map_quality": "high"
+            }
+        }
+    }
+}

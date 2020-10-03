@@ -8,6 +8,11 @@ from mapmode_pool import MapMode, MapModePool, MapPoolConfig, RoundContext, \
 	to_mapmode_list, get_map_pool_by_mode, read_map_pool_from_file, read_tournament_from_file
 import math 
 
+"""Generates a Tournament Maplist based on a tournament configuration and a map pool.
+   
+   author: bjackson8bit
+"""
+
 random.seed()
 
 example_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "examples/")
@@ -22,10 +27,17 @@ parser.add_argument('-m', '--map_pool_file', '--map_pool', '--map_pool_config', 
 	default=ex_map_pool, help="Generate a maplist using a custom json map pool config file.")
 
 parser.add_argument('-o', '--output_file', '--output' '--output_rounds',
-	default=ex_map_pool, help="Outputs Tourney rounds and used map pool as a JSON to the specified file. Creates it if it does not exist.")
+	default=None, help="Outputs Tourney rounds and used map pool as a JSON to the specified file. Creates it if it does not exist.")
 
 parsed_args = parser.parse_args()
 
+
+def round_to_dict(rd_name, mapmode_list):
+	return {
+		'round_name': rd_name,
+		'num_games': len(mapmode_list),
+		'stages': [str(mm) for mm in mapmode_list]
+	}
 
 
 def generate_round(rd, mapmode_pool, round_ctx):
@@ -46,8 +58,6 @@ def generate_round(rd, mapmode_pool, round_ctx):
 				limited_mapmode_pool = limited_mapmode_pool.filter_include_map(override.get('map')) \
 					if override.get('map') else limited_mapmode_pool
 		if limited_mapmode_pool:
-			# print(f"Choices {len(filtered_pool.mapmode_list)}")
-			# print(filtered_pool)
 			limited_mapmode_pool = limited_mapmode_pool.filter_from_ctx(round_ctx)
 			chosen_mapmode = limited_mapmode_pool.random_choice(map_quality)
 			round_ctx.append_game(chosen_mapmode)
@@ -77,13 +87,9 @@ def create_rounds_tournament(mapmode_list, tournament_dict):
 
 	used_map_pool = get_map_pool_by_mode(mapmode_pool.filter_exclude_bad_mapmodes().mapmode_list)
 	output_dict = {
+		'tournament_type': 'rounds',
 		'map_pool': used_map_pool,
-		'rounds': [
-		{
-			'round_name': f"Round {i + 1}",
-			'num_games': len(mm_list),
-			'stages': [str(mm) for mm in mm_list]
-		}
+		'rounds': [round_to_dict(f"Round {i + 1}", mm_list) 
 		for i,mm_list in enumerate(maplist)]
 	}
 	
@@ -97,7 +103,60 @@ def get_number_winners_rounds(num_players):
 
 # excludes grands
 def get_number_losers_rounds(num_players):
-	return (get_number_winners_rounds(num_players) - 1) * 2
+	return (get_number_winners_rounds(num_players) - 1) * 2 - 1
+
+
+def get_round_name(rd_num, num_rounds):
+	if rd_num == num_rounds - 3:
+		return "Quarterfinals"
+	elif rd_num == num_rounds - 2:
+		return "Semifinals"
+	elif rd_num == num_rounds - 1:
+		return "Finals"
+	else:
+		return f"Round {rd_num+1}"
+
+
+def create_single_elim_tournament(mapmode_list, tournament_dict):
+	num_players = 16
+	round_ctx = RoundContext()
+	round_cfg = {}
+	map_pool_config = MapPoolConfig()
+	for k, v in tournament_dict.items():
+		if k == 'round_config':
+			round_cfg = v
+		elif k == 'num_players':
+			num_players = v
+		else:
+			map_pool_config.set_parameter(k, v)
+	mapmode_pool = MapModePool(mapmode_list, map_pool_config)
+
+	output_rounds = []
+
+	# Generate rounds
+	num_winners_rounds = get_number_winners_rounds(num_players)
+	for i in range(num_winners_rounds):
+		if i == num_winners_rounds - 3 and 'quarterfinals' in round_cfg:
+			rd = round_cfg.get('quarterfinals')
+		elif i == num_winners_rounds - 2 and 'semifinals' in round_cfg:
+			rd = round_cfg.get('semifinals')
+		elif i == num_winners_rounds - 1 and 'finals' in round_cfg:
+			rd = round_cfg.get('finals')
+		else:
+			rd = round_cfg.get('default')
+		output_rounds.append(round_to_dict(get_round_name(i, num_winners_rounds), \
+			generate_round(rd, mapmode_pool, round_ctx)))
+
+	used_map_pool = get_map_pool_by_mode(mapmode_pool.filter_exclude_bad_mapmodes().mapmode_list)
+	
+	output_dict = {
+		'tournament_type': 'single_elim',
+		'num_players': num_players,
+		'map_pool': used_map_pool,
+		'rounds': output_rounds
+	}
+	
+	return output_dict
 
 
 def create_double_elim_tournament(mapmode_list, tournament_dict):
@@ -115,11 +174,11 @@ def create_double_elim_tournament(mapmode_list, tournament_dict):
 		else:
 			map_pool_config.set_parameter(k, v)
 	mapmode_pool = MapModePool(mapmode_list, map_pool_config)
-	print(round_cfg)
 
-	round_ctx_copy = round_ctx.clone()
 	# Generate wr1
 	winners_rounds.append(generate_round(round_cfg.get('default'), mapmode_pool, round_ctx))
+	
+	round_ctx_copy = round_ctx.clone()
 
 	# Generate losers rounds
 	num_losers_rounds = get_number_losers_rounds(num_players)
@@ -131,59 +190,46 @@ def create_double_elim_tournament(mapmode_list, tournament_dict):
 		else:
 			rd = round_cfg.get('default')
 		losers_rounds.append(generate_round(rd, mapmode_pool, round_ctx))
+
+	# Generate winners rounds
 	num_winners_rounds = get_number_winners_rounds(num_players)
+	# If 'share_rounds_w_l' setting is on, winners sets are copies of some losers rounds.
 	if round_cfg.get('share_rounds_w_l'):
-		for i in range(num_winners_rounds - 1):
-			winners_rounds.append(losers_rounds[2*(i + 1) - 2])
+		for rd_num in range(1, num_winners_rounds):
+			if rd_num == 1:
+				winners_rounds.append(losers_rounds[0])
+			else:
+				winners_rounds.append(losers_rounds[2*(rd_num - 1) - 1])
+	# If off, generate rounds as normal
 	else:
-		for i in range(num_winners_rounds - 1):
-			if i + 1 == num_winners_rounds - 3 and 'w_quarterfinals' in round_cfg:
+		for rd_num in range(1, num_winners_rounds):
+			if rd_num == num_winners_rounds - 3 and 'w_quarterfinals' in round_cfg:
 				rd = round_cfg.get('w_quarterfinals')
-			elif i + 1 == num_winners_rounds - 2 and 'w_semifinals' in round_cfg:
+			elif rd_num == num_winners_rounds - 2 and 'w_semifinals' in round_cfg:
 				rd = round_cfg.get('w_semifinals')
-			elif i + 1 == num_winners_rounds - 1 and 'w_finals' in round_cfg:
+			elif rd_num == num_winners_rounds - 1 and 'w_finals' in round_cfg:
 				rd = round_cfg.get('w_finals')
 			else:
 				rd = round_cfg.get('default')
 			winners_rounds.append(generate_round(rd, mapmode_pool, round_ctx_copy))
-	gf_rd = round_cfg.get('grand_finals') if 'grand_finals' in round_cfg else round_cfg.get('default')
-	winners_rounds.append(generate_round(gf_rd, mapmode_pool, round_ctx_copy))
-	print(losers_rounds)
-	print(winners_rounds)
+	
+	gf_rd = generate_round(round_cfg.get('grand_finals') if 'grand_finals' in round_cfg 
+														else round_cfg.get('default'), mapmode_pool, round_ctx_copy)
+	gf_reset_rd = generate_round(round_cfg.get('grand_finals_reset') if 'grand_finals_reset' in round_cfg 
+														else round_cfg.get('default'), mapmode_pool, round_ctx_copy)
+
 	used_map_pool = get_map_pool_by_mode(mapmode_pool.filter_exclude_bad_mapmodes().mapmode_list)
 	
 	output_rounds = []
-	for i in range(num_winners_rounds + 1):
-		if i == num_winners_rounds - 3:
-			rd_name = "Winners Quarterfinals"
-		elif i == num_winners_rounds - 2:
-			rd_name = "Winners Semifinals"
-		elif i == num_winners_rounds - 1:
-			rd_name = "Winners Finals"
-		elif i == num_winners_rounds:
-			rd_name = "Grand Finals"
-		else:
-			rd_name = f"Winners Round {i+1}"
-		output_rounds.append(
-			{
-				'round_name': rd_name,
-				'num_games': len(winners_rounds[i]),
-				'stages': [str(mm) for mm in winners_rounds[i]]
-			})
+	for i in range(num_winners_rounds):
+		output_rounds.append(round_to_dict(f"Winners {get_round_name(i, num_winners_rounds)}", winners_rounds[i]))
+
 	for i in range(num_losers_rounds):
-		if i == num_losers_rounds - 2:
-			rd_name = "Losers Semifinals"
-		elif i == num_losers_rounds - 1:
-			rd_name = "Losers Finals"
-		else:
-			rd_name = f"Losers Round {i+1}"
-		output_rounds.append(
-			{
-				'round_name': rd_name,
-				'num_games': len(losers_rounds[i]),
-				'stages': [str(mm) for mm in losers_rounds[i]]
-			})
-	
+		output_rounds.append(round_to_dict(f"Losers {get_round_name(i, num_losers_rounds)}", losers_rounds[i]))
+
+	output_rounds.append(round_to_dict("Grand Finals", gf_rd))
+	output_rounds.append(round_to_dict("Grand Finals Set 2 (If needed)", gf_reset_rd))
+
 	output_dict = {
 		'tournament_type': 'double_elim',
 		'num_players': num_players,
@@ -194,18 +240,21 @@ def create_double_elim_tournament(mapmode_list, tournament_dict):
 	return output_dict
 
 
-
-
 def create_tournament(mapmode_list, tournament_dict):
 	if 'tournament_type' not in tournament_dict:
 		raise RuntimeError('Key tournament_type not present in input file')
 	elif 'tournament_config' not in tournament_dict:
 		raise RuntimeError('Key tournament_config not present in input file')
-	cfg = tournament_dict.get('tournament_config')
-	if tournament_dict.get('tournament_type') == 'rounds':
-		return create_rounds_tournament(mapmode_list, cfg)
-	elif tournament_dict.get('tournament_type') in ['double elim', 'double_elim', 'double elimination', 'double_elimination']:
-		return create_double_elim_tournament(mapmode_list, cfg)
+
+	tournament_cfg = tournament_dict.get('tournament_config')
+	tournament_type = tournament_dict.get('tournament_type')
+	
+	if tournament_type == 'rounds':
+		return create_rounds_tournament(mapmode_list, tournament_cfg)
+	elif tournament_type in ['double elim', 'double_elim', 'double elimination', 'double_elimination']:
+		return create_double_elim_tournament(mapmode_list, tournament_cfg)
+	elif tournament_type in ['bracket', 'single elim', 'single_elim', 'single elimination', 'single_elimination']:
+		return create_single_elim_tournament(mapmode_list, tournament_cfg)
 
 def main():
 

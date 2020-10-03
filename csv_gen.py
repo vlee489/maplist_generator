@@ -1,6 +1,11 @@
 import json
 import sys
 import csv
+"""Coverts tournament data output by tournament_gen.py to
+   EGTV Readable CSV Format
+   
+   author: NintenZone
+"""
 
 if len(sys.argv) == 2:
     print("Creating files...")
@@ -99,4 +104,4 @@ else:
     print('You must run this program as follows:')
     print('python csv_gen.py <input_file.json>')
     print('')
-    print('If the JSON is not from maplist_gen.py, the program may exit unexpectedly.')
+    print('If the JSON is not from tournament_gen.py, the program may exit unexpectedly.')

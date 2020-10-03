@@ -3,13 +3,8 @@
     "tournament_config": {
         "num_players": 27,
         "round_config": {
+            "share_rounds_w_l": true,
             "default": {
-                "num_games": 3
-            },
-            "w_quarterfinals": {
-                "num_games": 3
-            },
-            "w_semifinals": {
                 "num_games": 3
             },
             "w_finals": {

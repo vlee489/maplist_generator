@@ -1,15 +1,386 @@
-Splat Zones on Piranha Pit
-Rainmaker on Snapper Canal
-Clam Blitz on Humpback Pump Track
-Tower Control on Inkblot Art Academy
-Splat Zones on Shellendorf Institute
-Rainmaker on Manta Maria
-Clam Blitz on Musselforge Fitness
-Tower Control on Starfish Mainstage
-Splat Zones on MakoMart
-Rainmaker on Blackbelly Skatepark
-Clam Blitz on New Albacore Hotel
-Tower Control on Sturgeon Shipyard
-Splat Zones on Wahoo World
-Rainmaker on Sturgeon Shipyard
-Clam Blitz on The Reef
+{
+    "modes": [
+        "Splat Zones",
+        "Tower Control",
+        "Rainmaker",
+        "Clam Blitz"
+    ],
+    "maps": {
+        "Splat Zones": [
+            {
+                "map_name": "Ancho-V Games",
+                "score": 9
+            },
+            {
+                "map_name": "Arowana Mall",
+                "score": 3
+            },
+            {
+                "map_name": "Blackbelly Skatepark",
+                "score": 7
+            },
+            {
+                "map_name": "Camp Triggerfish",
+                "score": 4
+            },
+            {
+                "map_name": "Goby Arena",
+                "score": 8
+            },
+            {
+                "map_name": "Humpback Pump Track",
+                "score": 8
+            },
+            {
+                "map_name": "Inkblot Art Academy",
+                "score": 9
+            },
+            {
+                "map_name": "Kelp Dome",
+                "score": 3
+            },
+            {
+                "map_name": "Mako Mart",
+                "score": 9
+            },
+            {
+                "map_name": "Manta Maria",
+                "score": 7.5
+            },
+            {
+                "map_name": "Moray Towers",
+                "score": 4
+            },
+            {
+                "map_name": "Musselforge Fitness",
+                "score": 7
+            },
+            {
+                "map_name": "New Albacore Hotel",
+                "score": 6
+            },
+            {
+                "map_name": "Piranha Pit",
+                "score": 8
+            },
+            {
+                "map_name": "Port Mackerel",
+                "score": 3
+            },
+            {
+                "map_name": "Shellendorf Institute",
+                "score": 6
+            },
+            {
+                "map_name": "Skipper Pavilion",
+                "score": 7.5
+            },
+            {
+                "map_name": "Snapper Canal",
+                "score": 7
+            },
+            {
+                "map_name": "Starfish Mainstage",
+                "score": 7.2
+            },
+            {
+                "map_name": "Sturgeon Shipyard",
+                "score": 7.5
+            },
+            {
+                "map_name": "The Reef",
+                "score": 8
+            },
+            {
+                "map_name": "Wahoo World",
+                "score": 7.5
+            },
+            {
+                "map_name": "Walleye Warehouse",
+                "score": 3
+            }
+        ],
+        "Tower Control": [
+            {
+                "map_name": "Ancho-V Games",
+                "score": 9
+            },
+            {
+                "map_name": "Arowana Mall",
+                "score": 3
+            },
+            {
+                "map_name": "Blackbelly Skatepark",
+                "score": 5
+            },
+            {
+                "map_name": "Camp Triggerfish",
+                "score": 5
+            },
+            {
+                "map_name": "Goby Arena",
+                "score": 3
+            },
+            {
+                "map_name": "Humpback Pump Track",
+                "score": 3
+            },
+            {
+                "map_name": "Inkblot Art Academy",
+                "score": 5
+            },
+            {
+                "map_name": "Kelp Dome",
+                "score": 3
+            },
+            {
+                "map_name": "Mako Mart",
+                "score": 7
+            },
+            {
+                "map_name": "Manta Maria",
+                "score": 5
+            },
+            {
+                "map_name": "Moray Towers",
+                "score": 1
+            },
+            {
+                "map_name": "Musselforge Fitness",
+                "score": 4
+            },
+            {
+                "map_name": "New Albacore Hotel",
+                "score": 5
+            },
+            {
+                "map_name": "Piranha Pit",
+                "score": 7
+            },
+            {
+                "map_name": "Port Mackerel",
+                "score": 1
+            },
+            {
+                "map_name": "Shellendorf Institute",
+                "score": 5
+            },
+            {
+                "map_name": "Skipper Pavilion",
+                "score": 1
+            },
+            {
+                "map_name": "Snapper Canal",
+                "score": 3
+            },
+            {
+                "map_name": "Starfish Mainstage",
+                "score": 7
+            },
+            {
+                "map_name": "Sturgeon Shipyard",
+                "score": 7
+            },
+            {
+                "map_name": "The Reef",
+                "score": 5
+            },
+            {
+                "map_name": "Wahoo World",
+                "score": 5
+            },
+            {
+                "map_name": "Walleye Warehouse",
+                "score": 3
+            }
+        ],
+        "Rainmaker": [
+            {
+                "map_name": "Ancho-V Games",
+                "score": 6
+            },
+            {
+                "map_name": "Arowana Mall",
+                "score": 2
+            },
+            {
+                "map_name": "Blackbelly Skatepark",
+                "score": 8
+            },
+            {
+                "map_name": "Camp Triggerfish",
+                "score": 3
+            },
+            {
+                "map_name": "Goby Arena",
+                "score": 2
+            },
+            {
+                "map_name": "Humpback Pump Track",
+                "score": 9
+            },
+            {
+                "map_name": "Inkblot Art Academy",
+                "score": 7
+            },
+            {
+                "map_name": "Kelp Dome",
+                "score": 2
+            },
+            {
+                "map_name": "Mako Mart",
+                "score": 7
+            },
+            {
+                "map_name": "Manta Maria",
+                "score": 7
+            },
+            {
+                "map_name": "Moray Towers",
+                "score": 2
+            },
+            {
+                "map_name": "Musselforge Fitness",
+                "score": 6
+            },
+            {
+                "map_name": "New Albacore Hotel",
+                "score": 5
+            },
+            {
+                "map_name": "Piranha Pit",
+                "score": 5
+            },
+            {
+                "map_name": "Port Mackerel",
+                "score": 2
+            },
+            {
+                "map_name": "Shellendorf Institute",
+                "score": 4
+            },
+            {
+                "map_name": "Skipper Pavilion",
+                "score": 4
+            },
+            {
+                "map_name": "Snapper Canal",
+                "score": 6
+            },
+            {
+                "map_name": "Starfish Mainstage",
+                "score": 6
+            },
+            {
+                "map_name": "Sturgeon Shipyard",
+                "score": 7
+            },
+            {
+                "map_name": "The Reef",
+                "score": 6
+            },
+            {
+                "map_name": "Wahoo World",
+                "score": 5
+            },
+            {
+                "map_name": "Walleye Warehouse",
+                "score": 2
+            }
+        ],
+        "Clam Blitz": [
+            {
+                "map_name": "Ancho-V Games",
+                "score": 5
+            },
+            {
+                "map_name": "Arowana Mall",
+                "score": 2
+            },
+            {
+                "map_name": "Blackbelly Skatepark",
+                "score": 2
+            },
+            {
+                "map_name": "Camp Triggerfish",
+                "score": 3
+            },
+            {
+                "map_name": "Goby Arena",
+                "score": 1
+            },
+            {
+                "map_name": "Humpback Pump Track",
+                "score": 6
+            },
+            {
+                "map_name": "Inkblot Art Academy",
+                "score": 7
+            },
+            {
+                "map_name": "Kelp Dome",
+                "score": 4
+            },
+            {
+                "map_name": "Mako Mart",
+                "score": 7
+            },
+            {
+                "map_name": "Manta Maria",
+                "score": 6
+            },
+            {
+                "map_name": "Moray Towers",
+                "score": 4
+            },
+            {
+                "map_name": "Musselforge Fitness",
+                "score": 7
+            },
+            {
+                "map_name": "New Albacore Hotel",
+                "score": 6
+            },
+            {
+                "map_name": "Piranha Pit",
+                "score": 8
+            },
+            {
+                "map_name": "Port Mackerel",
+                "score": 3
+            },
+            {
+                "map_name": "Shellendorf Institute",
+                "score": 3
+            },
+            {
+                "map_name": "Skipper Pavilion",
+                "score": 6
+            },
+            {
+                "map_name": "Snapper Canal",
+                "score": 9
+            },
+            {
+                "map_name": "Starfish Mainstage",
+                "score": 3
+            },
+            {
+                "map_name": "Sturgeon Shipyard",
+                "score": 5
+            },
+            {
+                "map_name": "The Reef",
+                "score": 9
+            },
+            {
+                "map_name": "Wahoo World",
+                "score": 5
+            },
+            {
+                "map_name": "Walleye Warehouse",
+                "score": 3
+            }
+        ]
+    }
+}

@@ -2,6 +2,11 @@ import random
 from collections import defaultdict
 import json
 
+"""Backend code for handling maplist and tournament configurations, and transforming map pools.
+
+   author: bjackson8bit
+"""
+
 class MapPoolConfig:
 	def __init__(self, 
 		exclude_map_score_threshold=6, 
