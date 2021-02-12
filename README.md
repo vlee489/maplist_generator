@@ -313,3 +313,15 @@ To output the .csv files required for the EGtv Graphics Package, along with a Di
 3) Run the following command:
 ```python csv_gen.py <name of .json file>```
 4) 2 .csv files and 1 .txt file will be generated and saved to /output.
+
+### IPL Complient JSON format
+
+To output the .json file in for format required [IPL Overlay Controls](https://github.com/inkfarer/ipl-overlay-controls), and the standard IPL maps message format follow these instructions.
+
+1. Follow the instructions above to output a .json from the maplist generator.
+2. Make and save any desired changes to the .json file.
+3. Run the following command 
+  ```bash
+  python ipl_gen.py <name of .json file>
+  ```
+4. a `{filename}_ipl.json` file and `{filename}_discord.md` (*markdown*) file will be generated in the same location as your original maplist generator output file.
