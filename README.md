@@ -314,7 +314,7 @@ To output the .csv files required for the EGtv Graphics Package, along with a Di
 ```python csv_gen.py <name of .json file>```
 4) 2 .csv files and 1 .txt file will be generated and saved to /output.
 
-### IPL Complient JSON format
+### IPL overlay Complient JSON format & Discord Message output
 
 To output the .json file in for format required [IPL Overlay Controls](https://github.com/inkfarer/ipl-overlay-controls), and the standard IPL maps message format follow these instructions.
 

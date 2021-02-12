@@ -1,10 +1,11 @@
 import json
 import sys
 import csv
-"""Coverts tournament data output by tournament_gen.py to
-   IPL Readable JSON format
+"""
+Coverts tournament data output by tournament_gen.py to
+IPL Readable JSON format
    
-   author: vlee489 
+author: vlee489 
 """
 
 
@@ -16,11 +17,17 @@ def generate_json(maps: dict, file_name: str):
             "maps": []
             }
         for stages in rounds["stages"]:
-            stage_split = stages.split(" on ")
-            cur_round["maps"].append({
-                "map": stage_split[1],
-                "mode": stage_split[0]
-            })
+            if stages == "Counterpick":
+                cur_round["maps"].append({
+                    "map": "Unknown Map",
+                    "mode": "Unknown Mode"
+                })
+            else:
+                stage_split = stages.split(" on ")
+                cur_round["maps"].append({
+                    "map": stage_split[1],
+                    "mode": stage_split[0]
+                })
         final_output.append(cur_round)
     
     with open(file_name, "w+") as f:
@@ -30,7 +37,7 @@ def generate_json(maps: dict, file_name: str):
 def generate_discord(maps: dict, file_name: str):
     final_output = ""
     for rounds in maps:
-        round_output = f"```\n{rounds['round_name']}\n```\n"
+        round_output = f"**\n{rounds['round_name']}\n**\n"
         for stages in rounds["stages"]:
             round_output = round_output + f"{stages}\n"
         final_output = f"{final_output}\n{round_output}"
